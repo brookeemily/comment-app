@@ -11,9 +11,6 @@ var db = require("./models")
 var htmlRouter = require("./controllers/html-routes.js");
 var articleRouter = require("./controllers/article-routes.js");
 
-// Set mongoose to leverage built in JavaScript ES6 Promises
-// mongoose.Promise = Promise;
-
 // Initialize Express
 var port = process.env.PORT || 3000;
 var app = express();
