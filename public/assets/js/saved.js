@@ -1,21 +1,21 @@
 $(document).ready(function() {
-  // Display saved articles on page load
+  // get json /articles
   $.getJSON("/articles", function(data) {
-    // For each one
+    // for each result.....
     for (var i = 0; i < data.length; i++) {
       // if article has been marked as saved
       if (data[i].saved === true) {
-        // Display the information on the page
+        // show info
         $("#saved-results").append(
-          "<div class='saved-div'><p class='saved-text'>" +
-            data[i].title +
-            "<br>" +
-            data[i].summary +
-            "</p><button class='unsave-button button is-danger is-medium' data-id='" +
-            data[i]._id +
-            "'><i class='fa fa-times'></i></a><a class='comments-button button is-info is-medium' data-id='" +
-            data[i]._id +
-            "'><button class='btn btn-primary icon' data-toggle='modal' data-target='#comment-modal'><i class='fa fa-comments'></i></button></a></div>"
+          "<div class='result-div'><h4 class='result-title'>" +
+          data[i].title +
+          "</h4><h6 class='result-summary'>" +
+          data[i].summary +
+          "</h6> <a target='_blank' class='result-link' href='"+ data[i].link + "'>" +
+          "Click to read story" +
+          "</a><button class='btn save-article' data-id='" +
+          data[i]._id +
+          "'><span class='icon'><i class='fa fa-bookmark'></i></span> Save Article</button></div>"
         );
       }
     }
@@ -74,11 +74,15 @@ $(document).ready(function() {
       }
     }).done(function(data) {
       // Log the response
-			console.log("data: ", data);
+      console.log("data: ", data);
+      
     });
-
-    // Also, remove the values entered in the inputs for comment entry
+    
+    // clear inputs for comment input
     $("#new-comment").val("");
+    // Reload the page when new comment is added
+    // location.reload();
+    $('#comment-modal').modal('show');
   });
 
   // Deleting Comments

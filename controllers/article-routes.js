@@ -9,38 +9,39 @@ var router = express.Router();
 
 
 
-// ============= ROUTES FOR HOME PAGE =============//
-
-// Scrape data from NPR website and save to mongodb
+// Scrape data from The Hard Times and save to mongodb
 router.get("/scrape", function(req, res) {
   // Use axios to get the body of the html of thehardtimes.net
   axios.get("https://thehardtimes.net/").then(function(response) {
-      // Load that data into cheerio and save it to $ for a shorthand selector
+      // load cheerio and save as variable
       var $ = cheerio.load(response.data);
 
       console.log(response.data);
-      // Now grab article elements
+      // grab all article elements
       $('article').each(function(i, element) {
-          // Save an empty result objet
+          // Save an empty result object
           var result = {};
 
+          // Save title 
           result.title = $(element)
           .find('.post-header')
-          .text();      
+          .text();     
+          // Save link 
           result.link = $(element)
           .find( 'a')
           .attr('href');
+          // Save summary
           result.summary = $(element)
           .find('.post-content')
           .text();
 
-          // Create a new Article using the "result" object built from scraping
+      // Create a new Article
       db.Article.create(result)
           .then(function(dbArticle){
               console.log(dbArticle);
           })
+          // catch error and return to client
           .catch(function(err){
-              // if an error occured, send it to client
               return res.json(err);
           });
       });
@@ -51,103 +52,93 @@ router.get("/scrape", function(req, res) {
 
 
 
-// This will get the articles we scraped from the mongoDB
+// Get the articles in database
 router.get("/articles", function(req, res) {
-  // Grab every doc in the Articles array
   db.Article.find({})
-  // Execute the above query
-  .exec(function(err, doc) {
-    // Log any errors
+  .exec(function(err, result) {
+    // Log errors
     if (err) {
       console.log(error);
     }
-    // Or send the doc to the browser as a json object
+    // or send json object to browser
     else {
-      res.json(doc);
+      res.json(result);
     }
   });
 });
 
-// Save an article
+// Save article 
 router.post("/save/:id", function(req, res) {
-  // Use the article id to find and update it's saved property to true
+  // Find article by ID and update "saved" to true
   db.Article.findOneAndUpdate({ "_id": req.params.id }, { "saved": true })
-  // Execute the above query
-  .exec(function(err, doc) {
-    // Log any errors
+  .exec(function(err, results) {
+    // Log errors
     if (err) {
       console.log(err);
     }
     // Log result
     else {
-      console.log("doc: ", doc);
+      console.log(results);
     }
   });
 });
 
 
-// ============= ROUTES FOR SAVED ARTICLES PAGE =============//
-
-// Grab an article by it's ObjectId
+// Get article by id
 router.get("/articles/:id", function(req, res) {
-  // Using the id passed in the id parameter, prepare a query that finds the matching one in our db...
   db.Article.findOne({ "_id": req.params.id })
-  // ..and populate all of the comments associated with it
+  // populate article with any comments associated with it
   .populate("comments")
-  // now, execute our query
-  .exec(function(error, doc) {
-    // Log any errors
+  .exec(function(error, results) {
+    // Log errors
     if (error) {
       console.log(error);
     }
-    // Otherwise, send the doc to the browser as a json object
+    // or send json object to browser
     else {
-      res.json(doc);
+      res.json(results);
     }
   });
 });
 
 // Create a new comment
 router.post("/comment/:id", function(req, res) {
-  // Create a new comment and pass the req.body to the entry
   var newComment = new Comment(req.body);
-  // And save the new comment the db
+  // save the new comment the db
   newComment.save(function(error, newComment) {
-    // Log any errors
+    // Log errors
     if (error) {
       console.log(error);
     }
-    // Otherwise
+    // if there are no errors
     else {
-      // Use the article id to find and update it's comment
+      // find and update article by ID and add new comment to comments array
       db.Article.findOneAndUpdate({ "_id": req.params.id }, { $push: { "comments": newComment._id }}, { new: true })
-      // Execute the above query
-      .exec(function(err, doc) {
-        // Log any errors
+      .exec(function(err, results) {
+        // Log errors
         if (err) {
           console.log(err);
         }
         else {
-          console.log("doc: ", doc);
-          // Or send the document to the browser
-          res.send(doc);
+          console.log("doc: ", results);
+          // send the result to the browser
+          res.send(results);
         }
       });
     }
   });
 });
 
-// Remove a saved article
+// Remove saved article
 router.post("/unsave/:id", function(req, res) {
-  // Use the article id to find and update it's saved property to false
+  // find and update article by ID, update saved to false
   db.Article.findOneAndUpdate({ "_id": req.params.id }, { "saved": false })
-  // Execute the above query
-  .exec(function(err, doc) {
-    // Log any errors
+  .exec(function(err, results) {
+    // Log errors
     if (err) {
       console.log(err);
     }
-    // Log result
+    // Log removed
     else {
       console.log("Article Removed");
     }

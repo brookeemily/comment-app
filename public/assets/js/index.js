@@ -12,9 +12,9 @@ $(document).ready(function() {
           data[i].summary +
           "</h6> <a target='_blank' class='result-link' href='"+ data[i].link + "'>" +
           "Click to read story" +
-          "</a><button class='save-article button is-info is-medium' data-id='" +
+          "</a><button class='btn save-article' data-id='" +
           data[i]._id +
-          "'><span class='icon'><i class='fa fa-bookmark'></i></span>Save Article</button></div>"
+          "'><span class='icon'><i class='fa fa-bookmark'></i></span> Save Article</button></div>"
       );
     }
   });
