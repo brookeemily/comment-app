@@ -1,34 +1,40 @@
+// Require mongoose
 var mongoose = require("mongoose");
-
+// Create Schema class
 var Schema = mongoose.Schema;
 
-// Save reference to the Schema constructor
+// Create article schema
 var ArticleSchema = new Schema({
-    // Title of article
-    title: {
-        type: String,
-        required: true
-    },
-    // Link to article
-    link: {
-        type: String,
-        required: true
-    },
-    summary: {
-        type: String,
-        required: true
-    },
-    // Comment is an object that stores the comment id
-    // Ref propery links to the ObjectID to the Comment model
-    // This populates the article with the associated comment
-    comment: {
-        type: Schema.Types.ObjectId,
-        ref: "Comment"
-    }
+  // title is a required string
+  title: {
+    type: String,
+    required: true,
+  },
+  // summary is a required string
+  summary: {
+    type: String,
+    required: true,
+  },
+  // link is a required string
+  link: {
+    type: String,
+    required: true
+  },
+  // boolean to flag articles as saved
+  saved: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
+  // This will save an array of comments' ObjectIds
+  comments:[{
+        type: Schema.ObjectId,
+        ref:'Comment'
+    }]
 });
 
-// This creates our model from the schema above, using mogngoose's model method
+// Create the Article model with the ArticleSchema
 var Article = mongoose.model("Article", ArticleSchema);
 
-// Export the Article model
+// Export the model
 module.exports = Article;

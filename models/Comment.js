@@ -1,17 +1,20 @@
+// Require mongoose
 var mongoose = require("mongoose");
-
-// Save a reference to the Schema constructor
+// Create a schema class
 var Schema = mongoose.Schema;
 
-// Using the constructor, create a CommentSchema object
+// Create the comment schema
 var CommentSchema = new Schema({
-    // title of comment
-    title: String,
-    // body of string
-    body: String
+  // The comment text
+  body: {
+    type: String
+  }
 });
 
-// This creates our model from the schema above, using mongoose's model method
+// Mongoose will automatically save the ObjectIds of the comments
+// These ids are referred to in the Article model
+
+// Create the Comment model with the CommentSchema
 var Comment = mongoose.model("Comment", CommentSchema);
 
 // Export the Comment model

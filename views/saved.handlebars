@@ -1,0 +1,36 @@
+
+
+{{!-- CONTAINER --}}
+<div class="container-fluid">
+
+{{!-- ARTICLE DISPLAY --}}
+<div class="container">
+    <h1 class="title">Saved Articles</h1>
+    <hr>
+    <div id="saved-results"></div>
+</div>
+
+
+
+
+<div class="modal" tabindex="-1" role="dialog" id="comment-modal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="comments-header">
+          {{!-- Dynamically created --}}
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="comments-list">
+        <p>No comments yet!</p>
+      </div>
+      <hr>
+      	<div class='form-group'><label for='exampleFormControlTextarea1'>Example textarea</label><textarea class='form-control' id='new-comment' rows='3'></textarea></div>
+      <div class="modal-footer modal-card-foot">
+      </div>
+    </div>
+  </div>
+</div>
