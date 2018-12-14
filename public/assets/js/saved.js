@@ -21,7 +21,7 @@ $(document).ready(function() {
     }
   });
 
-  // Comment button opens the comments modal & displays any comments
+  // When comment button is clicked
   $(document).on("click", ".comments-button", function() {
     // Open the comments modal
     $(".modal").toggleClass("is-active");
@@ -34,8 +34,8 @@ $(document).ready(function() {
     }).done(function(data) {
       // Update modal header
 			$("#comments-header").html(data.title);
-			console.log(data.comments);
-			console.log(data.comments.body);
+			// console.log(data.comments);
+			// console.log(data.comments.body);
       // If the article has comments
       if (data.comments.length !== 0) {
         // Clear out the comment div
@@ -51,8 +51,6 @@ $(document).ready(function() {
       }
       // Append save comment button with article's ID saved as data-id attribute
       $(".modal-card-foot").html(
-				
-
         "<button id='save-comment' class='button is-success' data-id='" +
           data._id +
           "'>Save Comment</button>"
@@ -60,9 +58,9 @@ $(document).ready(function() {
     });
   });
 
-  // Saving Comments
+  // When save comment button is cicked...
   $(document).on("click", "#save-comment", function() {
-    // Grab the id associated with the article from the submit button
+    // Grab the id associated with the article from the save comment button
     var articleID = $(this).attr("data-id");
     // Run a POST request to add a comment, using what's entered in the inputs
     $.ajax({

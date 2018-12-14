@@ -26,7 +26,7 @@ var ArticleSchema = new Schema({
     required: true,
     default: false
   },
-  // This will save an array of comments' ObjectIds
+  // Saves array of associated comment IDs
   comments:[{
         type: Schema.ObjectId,
         ref:'Comment'

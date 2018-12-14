@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  // Grab the articles as a json when page loads, append to the page
+  // Grab articles as a json when page loads, append to the page
   $.getJSON("/articles", function(data) {
     // For each one
     for (var i = 0; i < data.length; i++) {
@@ -19,9 +19,9 @@ $(document).ready(function() {
     }
   });
 
-  // Save article button changes the saved property of the article model from false to true
+  // When save article button is clicked
   $(document).on("click", ".save-article", function() {
-    // change icon to check mark
+    // change icon to check mark to visualize that the article is saved
     $(this)
       .children("span.icon")
       .children("i.fa-bookmark")
